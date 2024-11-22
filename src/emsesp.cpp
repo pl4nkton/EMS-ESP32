@@ -74,6 +74,8 @@ TemperatureSensor EMSESP::temperaturesensor_; // Temperature sensors
 AnalogSensor      EMSESP::analogsensor_;      // Analog sensors
 Shower            EMSESP::shower_;            // Shower logic
 Preferences       EMSESP::nvs_;               // NV Storage
+WMeter            EMSESP::wmeter_;            // WMeter
+MBus              EMSESP::mbus_;
 
 // static/common variables
 uint16_t EMSESP::watch_id_         = WATCH_ID_NONE; // for when log is TRACE. 0 means no trace set
@@ -1537,6 +1539,8 @@ void EMSESP::start() {
     mqtt_.start();              // mqtt init
     system_.start();            // starts commands, led, adc, button, network (sets hostname), syslog & uart
     shower_.start();            // initialize shower timer and shower alert
+    wmeter_.start();
+    mbus_.start();
     temperaturesensor_.start(); // Temperature external sensors
     analogsensor_.start();      // Analog external sensors
     webLogService.start();      // apply settings to weblog service
@@ -1570,6 +1574,8 @@ void EMSESP::loop() {
         publish_all_loop();         // with HA messages in parts to avoid flooding the mqtt queue
         mqtt_.loop();               // sends out anything in the MQTT queue
         webSchedulerService.loop(); // handle any scheduled jobs
+        wmeter_.loop();
+        mbus_.loop();
 
         // force a query on the EMS devices to fetch latest data at a set interval (1 min)
         scheduled_fetch_values();

@@ -62,6 +62,8 @@
 #include "roomcontrol.h"
 #include "command.h"
 #include "version.h"
+#include "wmeter.h"
+#include "mbus.h"
 
 #define WATCH_ID_NONE 0 // no watch id set
 
@@ -80,6 +82,8 @@ using DeviceValueNumOp = DeviceValue::DeviceValueNumOp;
 // forward declarations for compiler
 class EMSESPShell;
 class Shower;
+class WMeter;
+class MBus;
 
 class EMSESP {
   public:
@@ -215,6 +219,8 @@ class EMSESP {
     static RxService         rxservice_;
     static TxService         txservice_;
     static Preferences       nvs_;
+    static WMeter            wmeter_;
+    static MBus              mbus_;
 
     // web controllers
     static ESP8266React            esp8266React;
